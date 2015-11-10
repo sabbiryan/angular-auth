@@ -11,17 +11,17 @@ angular.module("authApp", ["ui.router", "ngResource"])
                 .state("site", {
                     'abstract': true,
                     url: "",
-                    //resolve: {
-                    //    authorize: [
-                    //        "AuthorizationService",
-                    //        function (AuthorizationService) {
-                    //            return AuthorizationService.authorize();
-                    //        }
-                    //    ]
-                    //},
+                    resolve: {
+                        authorize: [
+                            "AuthorizationService",
+                            function (AuthorizationService) {
+                                return AuthorizationService.authorize();
+                            }
+                        ]
+                    },
 
                     template: "<div ui-view class=\"container slide\"></div>",
-                    //controller: "AppController"
+                    controller: "AppController"
 
                 })
                 .state("home", {
@@ -46,10 +46,24 @@ angular.module("authApp", ["ui.router", "ngResource"])
                 $rootScope.toState = toState;
                 $rootScope.toStateParams = toStateParams;
 
+                var isLogin = toState.name === "login";
+                if (isLogin) return;
+
+                var isAccessDenied = toState.name === "denied";
+                if (isAccessDenied) return;
+
+                if (!AuthenticationService.isIdentityResolved()) {
+                    event.preventDefault();
+                    $state.go("login");
+                }
+
                 if (AuthenticationService.isIdentityResolved()) {
-                    if (!AuthorizationService.authorize())
+                    if (!AuthorizationService.authorize()) {
                         event.preventDefault();
-                }                    
+                        $state.go("denied");
+                    }
+
+                }
 
 
             });

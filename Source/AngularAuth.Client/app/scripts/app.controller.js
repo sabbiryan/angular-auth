@@ -2,8 +2,8 @@
 
 angular.module("authApp")
     .controller("AppController", [
-        "$scope", "$state", "principal",
-        function ($scope, $state, principal) {
+        "$scope", "$state",
+        function ($scope, $state) {
             
             $scope.logout = function() {
                 localStorage.clear("user");

@@ -5,11 +5,10 @@ angular.module("authApp")
         "$scope", "$state", "AuthenticationService", "UserDataService",
         function ($scope, $state, AuthenticationService, UserDataService) {
 
-            $scope.credentials =
-                {
-                    Username: "",
-                    Password: ""
-                };
+            $scope.credentials = {
+                Username: "",
+                Password: ""
+            };
 
             $scope.login = function(credentials) {
 

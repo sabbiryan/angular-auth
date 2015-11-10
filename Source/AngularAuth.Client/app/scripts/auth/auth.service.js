@@ -9,7 +9,10 @@ angular.module("authApp")
                 _authenticated = false;
 
             return {
-                isIdentityResolved: function() {
+                isIdentityResolved: function () {
+                    var identity = angular.fromJson(localStorage.getItem("userInfo"));
+                    if (identity)
+                        _identity = identity;
                     return angular.isDefined(_identity);
                 },
 

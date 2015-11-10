@@ -15,8 +15,8 @@
                 <li ui-sref-active="active"><a ui-sref="admin">Admin</a></li>
             </ul>
 
-            <ul class="nav navbar-nav pull-right">
-                <li><a ng-click="logout()">Logout</a></li>
+            <ul class="nav navbar-nav pull-right" ng-controller="AppController">
+                <li><a style="cursor: pointer" ng-click="logout()">Logout</a></li>
             </ul>
         </div>
     </div>
