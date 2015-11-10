@@ -20,24 +20,6 @@ angular.module("authApp")
                     return _authenticated;
                 },
 
-                isInRole: function(role) {
-                    if (!_authenticated || !_identity.roles)
-                        return false;
-
-                    return _identity.roles.indexOf(role) !== -1;
-                },
-
-                isInAnyRole: function(roles) {
-                    if (!_authenticated || !_identity.roles)
-                        return false;
-
-                    for (var i = 0; i < roles.length; i++) {
-                        if (this.isInRole(roles[i]))
-                            return true;
-                    }
-
-                    return false;
-                },
 
                 authenticate: function(identity) {
 
@@ -57,14 +39,10 @@ angular.module("authApp")
                 },
 
                 identity: function(force) {
-                    //var deferred = $q.defer();
 
                     if (force === true) _identity = undefined;
 
-                    // check and see if we have retrieved the identity data from the server. if we have, reuse it by immediately resolving
                     if (angular.isDefined(_identity)) {
-                        //deferred.resolve(_identity);
-                        //return deferred.promise;
                         return _identity;
                     }
 
@@ -86,10 +64,7 @@ angular.module("authApp")
                     $timeout(function() {
                         _identity = angular.fromJson(localStorage.getItem("userInfo"));
                         self.authenticate(_identity);
-                        //deferred.resolve(_identity);
                     }, 1000);
-
-                    //return deferred.promise;
                     return _identity;
                 }
             };
@@ -110,28 +85,6 @@ angular.module("authApp")
                     var permission = PermissionDataService.checkUserPermission(ideniity, $rootScope.toState);
 
                     return permission;
-
-                    //return AuthenticationService.identity()
-                    //    .then(function() {
-
-                    //        var isAuthenticated = AuthenticationService.isAuthenticated();
-
-                    //        //if (
-                    //        //    $rootScope.toState.data.roles &&
-                    //        //    $rootScope.toState.data.roles.length > 0 &&
-                    //        //    !AuthenticationService.isInAnyRole($rootScope.toState.data.roles))
-
-
-                    //            if (isAuthenticated)
-                    //                $state.go("denied"); 
-
-                    //            else {
-                    //                $rootScope.returnToState = $rootScope.toState;
-                    //                $rootScope.returnToStateParams = $rootScope.toStateParams;
-
-                    //                $state.go("login");
-                    //            }
-                    //    });
                 }
             };
         }

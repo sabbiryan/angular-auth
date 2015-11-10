@@ -2,8 +2,8 @@
 
 angular.module("authApp")
     .controller("LoginController", [
-        "$scope", "$state", "AuthenticationService", "UserDataService",
-        function ($scope, $state, AuthenticationService, UserDataService) {
+        "$scope", "$state", "AuthenticationService", "UserDataService", "$window",
+        function ($scope, $state, AuthenticationService, UserDataService, $window) {                        
 
             $scope.credentials = {
                 Username: "",
@@ -27,5 +27,7 @@ angular.module("authApp")
                     $state.go("login");
                 }
             };
+
+            
         }
     ]);
