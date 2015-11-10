@@ -12,6 +12,20 @@ angular.module("authApp")
                      ];
 
                      return this.roles;
+                 },
+
+                 getUserRole: function(roleId) {
+
+                     var roles = this.get();
+
+                     for (var r in roles) {
+                         if (roles.hasOwnProperty(r)) {
+                             if (roles[r].Id === roleId)
+                                 return roles[r];
+                         }
+                     }
+
+                     return null;
                  }
              }
         }
