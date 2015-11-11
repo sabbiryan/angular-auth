@@ -2,8 +2,8 @@
 
 angular.module("authApp")
     .controller("LoginController", [
-        "$rootScope", "$scope", "$state", "AuthenticationService", "UserDataService", "$window",
-        function ($rootScope, $scope, $state, AuthenticationService, UserDataService, $window) {
+        "$rootScope", "$scope", "$state", "AuthenticationService",
+        function ($rootScope, $scope, $state, AuthenticationService) {
 
             $scope.credentials = {
                 Username: "",
@@ -12,10 +12,9 @@ angular.module("authApp")
 
             $scope.login = function(credentials) {
 
-                var authenticate = UserDataService.isValidUser($scope.credentials);
-                AuthenticationService.authenticate($scope.credentials);
+                var isLoggedInSuccess = AuthenticationService.authenticate($scope.credentials);
 
-                if (authenticate) {
+                if (isLoggedInSuccess) {
 
                     $rootScope.$broadcast('loggedIn');
 

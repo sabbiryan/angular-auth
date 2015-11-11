@@ -20,7 +20,7 @@ angular.module("authApp")
                     return undefined;
                 },
 
-                getUserIsLogin: function () {
+                getUserIsLoggedIn: function () {
 
                     var userInfo = this.getUserInfo();
                     if (userInfo) {

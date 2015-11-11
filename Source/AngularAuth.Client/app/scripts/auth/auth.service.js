@@ -9,11 +9,11 @@ angular.module("authApp")
                
                 authenticate: function(identity) {
 
-                    if (LocalStorageService.getUserIsLogin()) return true;
+                    if (LocalStorageService.getUserIsLoggedIn()) return true;
 
                     if (identity) {
-                        var login = UserDataService.isValidUser(identity);
-                        if (login) return true;
+                        var isloginSuccess = UserDataService.isValidUser(identity);
+                        if (isloginSuccess) return true;
                     }
 
                     LocalStorageService.clearUserInfo();
@@ -29,13 +29,15 @@ angular.module("authApp")
     .factory("AuthorizationService", [
         "$rootScope", "$state", "AuthenticationService", "PermissionDataService", "LocalStorageService",
         function ($rootScope, $state, AuthenticationService, PermissionDataService, LocalStorageService) {
+
             return {
 
-                authorize: function () {
+                authorize: function (toState) {
 
-                    var userInfo = LocalStorageService.getUserInfo();
+                    //var userInfo = LocalStorageService.getUserInfo();
+                    //var permission = PermissionDataService.checkUserPermission(userInfo, toState);
 
-                    var permission = PermissionDataService.checkUserPermission(userInfo, $rootScope.toState);
+                    var permission = PermissionDataService.checkUserTokenBasedPermission(toState);
 
                     return permission;
                 }

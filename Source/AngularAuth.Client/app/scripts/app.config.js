@@ -34,8 +34,8 @@ angular.module("authApp", ["ui.router", "ngResource"])
 
             $rootScope.$on("$stateChangeStart", function(event, toState, toStateParams) {
 
-                $rootScope.toState = toState;
-                $rootScope.toStateParams = toStateParams;
+                //$rootScope.toState = toState;
+                //$rootScope.toStateParams = toStateParams;
 
                 var isLogin = toState.name === "login";
                 if (isLogin) return;
@@ -45,7 +45,7 @@ angular.module("authApp", ["ui.router", "ngResource"])
 
                 
                 if (AuthenticationService.authenticate()) {
-                    if (!AuthorizationService.authorize()) {                       
+                    if (!AuthorizationService.authorize(toState)) {                       
                         event.preventDefault();
                         $state.go("denied");
                     }

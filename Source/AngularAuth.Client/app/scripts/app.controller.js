@@ -5,18 +5,18 @@ angular.module("authApp")
         "$rootScope", "$scope", "$state", "$window", "LocalStorageService",
         function ($rootScope, $scope, $state, $window, LocalStorageService) {
 
-            $scope.isLogin = LocalStorageService.getUserIsLogin();
+            $scope.isLoggedIn = LocalStorageService.getUserIsLoggedIn();
 
-            $scope.logout = function () {
-                $scope.isLogin = false;
+            $scope.logout = function () {                
                 LocalStorageService.clearUserInfo();
+                $scope.isLoggedIn = false;
                 $rootScope.$broadcast('loggedOut');
                 $state.go("login", {}, {reload: true});                
             }
 
             $rootScope.$on('loggedIn', function(event, args) {
                 console.log(event);
-                $scope.isLogin = LocalStorageService.getUserIsLogin();
+                $scope.isLoggedIn = LocalStorageService.getUserIsLoggedIn();
             });
 
             $rootScope.$on('loggedOut', function (event, args) {
