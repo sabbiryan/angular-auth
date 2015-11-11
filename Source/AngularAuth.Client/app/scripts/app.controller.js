@@ -2,17 +2,16 @@
 
 angular.module("authApp")
     .controller("AppController", [
-        "$scope", "$state", "$window",
-        function ($scope, $state, $window) {            
+        "$scope", "$state", "$window", "LocalStorageService",
+        function ($scope, $state, $window, LocalStorageService) {
 
-            $scope.isLogin = angular.fromJson(localStorage.getItem("isLogin"));
-
-            //if ($scope.isLogin) $window.location.reload();
+            $scope.isLogin = LocalStorageService.getIsLogin();
 
             $scope.logout = function() {
-                localStorage.clear("user");
-                localStorage.clear("isLogin");                
-                $state.go("login", {});                
+                LocalStorageService.clearUserInfo();
+
+                $state.go("login", {}, {reload: true});                
             }
+            
         }
     ]);

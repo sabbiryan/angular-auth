@@ -2,15 +2,15 @@
 
 angular.module("authApp")
     .factory("AuthenticationService", [
-        "$q", "$http", "$timeout", "UserDataService",
-        function($q, $http, $timeout, UserDataService) {
+        "$q", "$http", "$timeout", "UserDataService", "LocalStorageService",
+        function ($q, $http, $timeout, UserDataService, LocalStorageService) {
 
             var _identity = undefined,
                 _authenticated = false;
 
             return {
                 isIdentityResolved: function () {
-                    var identity = angular.fromJson(localStorage.getItem("userInfo"));
+                    var identity = LocalStorageService.getUserInfo();
                     if (identity)
                         _identity = identity;
                     return angular.isDefined(_identity);
@@ -29,12 +29,10 @@ angular.module("authApp")
                     _authenticated = user != null;
 
                     if (user) {
-                        localStorage.setItem("userInfo", angular.toJson(user));
-                        localStorage.setItem("isLogin", true);
+                        LocalStorageService.setUserInfo(user);
 
                     } else {
-                        localStorage.removeItem("userInfo");
-                        localStorage.removeItem("isLogin");
+                        LocalStorageService.clearUserInfo();
                     }
                 },
 
@@ -62,7 +60,7 @@ angular.module("authApp")
 
                     var self = this;
                     $timeout(function() {
-                        _identity = angular.fromJson(localStorage.getItem("userInfo"));
+                        _identity = LocalStorageService.getUserInfo();
                         self.authenticate(_identity);
                     }, 1000);
                     return _identity;

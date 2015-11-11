@@ -24,7 +24,7 @@ angular.module("authApp")
                         $state.go("home");
 
                 } else {
-                    $state.go("login");
+                    $state.go("login", {}, { reload: true });                    
                 }
             };
 
