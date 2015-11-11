@@ -5,7 +5,7 @@ angular.module("authApp")
         "$scope", "$state", "$window", "LocalStorageService",
         function ($scope, $state, $window, LocalStorageService) {
 
-            $scope.isLogin = LocalStorageService.getIsLogin();
+            $scope.isLogin = LocalStorageService.getUserIsLogin();
 
             $scope.logout = function() {
                 LocalStorageService.clearUserInfo();

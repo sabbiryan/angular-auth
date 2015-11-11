@@ -3,16 +3,14 @@
 angular.module("authApp")
     .factory("AuthenticationService", [
         "$q", "$http", "$timeout", "UserDataService", "LocalStorageService",
-        function ($q, $http, $timeout, UserDataService, LocalStorageService) {
+        function($q, $http, $timeout, UserDataService, LocalStorageService) {
 
             var _identity = undefined,
                 _authenticated = false;
 
             return {
-                isIdentityResolved: function () {
-                    var identity = LocalStorageService.getUserInfo();
-                    if (identity)
-                        _identity = identity;
+                isIdentityResolved: function() {
+                    _identity = LocalStorageService.getUserInfo();
                     return angular.isDefined(_identity);
                 },
 
@@ -24,11 +22,12 @@ angular.module("authApp")
                 authenticate: function(identity) {
 
                     var user = UserDataService.isValidUser(identity);
-
-                    _identity = user;
-                    _authenticated = user != null;
+                    
 
                     if (user) {
+                        _identity = user;
+                        _authenticated = true;
+
                         LocalStorageService.setUserInfo(user);
 
                     } else {
@@ -44,25 +43,14 @@ angular.module("authApp")
                         return _identity;
                     }
 
-                    // otherwise, retrieve the identity data from the server, update the identity object, and then resolve.
-                    //                   $http.get('/api/Login/identity', { ignoreErrors: true })
-                    //                        .success(function(data) {
-                    //                            _identity = data;
-                    //                            _authenticated = true;
-                    //                            deferred.resolve(_identity);
-                    //                        })
-                    //                        .error(function () {
-                    //                            _identity = null;
-                    //                            _authenticated = false;
-                    //                            deferred.resolve(_identity);
-                    //                        });
-
-
                     var self = this;
-                    $timeout(function() {
-                        _identity = LocalStorageService.getUserInfo();
-                        self.authenticate(_identity);
-                    }, 1000);
+                    $timeout(
+                        function() {
+                            _identity = LocalStorageService.getUserInfo();
+                            self.authenticate(_identity);
+                        },
+                        1000);
+
                     return _identity;
                 }
             };
@@ -78,7 +66,6 @@ angular.module("authApp")
                 authorize: function () {
 
                     var ideniity = AuthenticationService.identity();
-
 
                     var permission = PermissionDataService.checkUserPermission(ideniity, $rootScope.toState);
 

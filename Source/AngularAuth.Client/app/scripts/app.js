@@ -10,16 +10,7 @@ angular.module("authApp", ["ui.router", "ngResource"])
             $stateProvider
                 .state("site", {
                     'abstract': true,
-                    url: "",
-                    resolve: {
-                        authorize: [
-                            "AuthorizationService",
-                            function (AuthorizationService) {
-                                return AuthorizationService.authorize();
-                            }
-                        ]
-                    },
-
+                    url: "",                    
                     template: "<div ui-view class=\"container slide\"></div>",
                     controller: "AppController"
 
@@ -51,6 +42,8 @@ angular.module("authApp", ["ui.router", "ngResource"])
 
                 var isAccessDenied = toState.name === "denied";
                 if (isAccessDenied) return;
+
+                
 
                 if (!AuthenticationService.isIdentityResolved()) {
                     event.preventDefault();

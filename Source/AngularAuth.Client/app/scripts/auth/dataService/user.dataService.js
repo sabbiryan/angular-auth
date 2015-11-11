@@ -26,11 +26,9 @@ angular.module("authApp")
                         for (var u in userList) {
                             if (userList.hasOwnProperty(u)) {
                                 if (userList[u].Username === user.Username && userList[u].Password === user.Password) {
-
-                                    //var role = RoleDataService.getUserRole(userList[u].RoleId);
-
-                                    userList[u].isLogin = true;
-                                    //userList[u].Role = role;
+                                    
+                                    userList[u].IsLogin = true;
+                                    userList[u].Token = "ABFH^456DFJUIFDKSKNAKJHEBHR";
                                     return userList[u];
                                 }
                             }
