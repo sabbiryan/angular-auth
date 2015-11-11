@@ -5,69 +5,37 @@ angular.module("authApp")
         "$q", "$http", "$timeout", "UserDataService", "LocalStorageService",
         function($q, $http, $timeout, UserDataService, LocalStorageService) {
 
-            var _identity = undefined,
-                _authenticated = false;
-
             return {
-                isIdentityResolved: function() {
-                    _identity = LocalStorageService.getUserInfo();
-                    return angular.isDefined(_identity);
-                },
-
-                isAuthenticated: function() {
-                    return _authenticated;
-                },
-
-
+               
                 authenticate: function(identity) {
 
-                    var user = UserDataService.isValidUser(identity);
-                    
+                    if (LocalStorageService.getUserIsLogin()) return true;
 
-                    if (user) {
-                        _identity = user;
-                        _authenticated = true;
-
-                        LocalStorageService.setUserInfo(user);
-
-                    } else {
-                        LocalStorageService.clearUserInfo();
-                    }
-                },
-
-                identity: function(force) {
-
-                    if (force === true) _identity = undefined;
-
-                    if (angular.isDefined(_identity)) {
-                        return _identity;
+                    if (identity) {
+                        var login = UserDataService.isValidUser(identity);
+                        if (login) return true;
                     }
 
-                    var self = this;
-                    $timeout(
-                        function() {
-                            _identity = LocalStorageService.getUserInfo();
-                            self.authenticate(_identity);
-                        },
-                        1000);
+                    LocalStorageService.clearUserInfo();
 
-                    return _identity;
+                    return false;
                 }
-            };
+               
+            }
         }
     ])
 
     
     .factory("AuthorizationService", [
-        "$rootScope", "$state", "AuthenticationService", "PermissionDataService",
-        function ($rootScope, $state, AuthenticationService, PermissionDataService) {
+        "$rootScope", "$state", "AuthenticationService", "PermissionDataService", "LocalStorageService",
+        function ($rootScope, $state, AuthenticationService, PermissionDataService, LocalStorageService) {
             return {
 
                 authorize: function () {
 
-                    var ideniity = AuthenticationService.identity();
+                    var userInfo = LocalStorageService.getUserInfo();
 
-                    var permission = PermissionDataService.checkUserPermission(ideniity, $rootScope.toState);
+                    var permission = PermissionDataService.checkUserPermission(userInfo, $rootScope.toState);
 
                     return permission;
                 }

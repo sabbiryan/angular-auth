@@ -2,7 +2,8 @@
 
 angular.module("authApp")
     .service("PermissionDataService", [
-        function() {
+        "LocalStorageService",
+        function(LocalStorageService) {
 
             return {
                 get: function() {
@@ -39,6 +40,23 @@ angular.module("authApp")
                     var permissions = this.get();
 
                     if (userInfo && permissionObject) {
+
+                        for (var p in permissions) {
+
+                            if (permissions[p].UserId === userInfo.Id && permissions[p].RoleId === userInfo.RoleId && permissions[p].Permission === permissionObject.name)
+                                return true;
+                        }
+                    }
+                    return false;
+                },
+
+
+                checkUserTokenBasedPermission: function(permissionObject) {
+
+                    var permissions = this.get();
+                    var userInfo = LocalStorageService.getUserInfo();
+
+                    if (permissionObject) {
 
                         for (var p in permissions) {
 

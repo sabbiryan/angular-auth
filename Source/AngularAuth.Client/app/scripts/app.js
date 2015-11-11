@@ -44,22 +44,19 @@ angular.module("authApp", ["ui.router", "ngResource"])
                 if (isAccessDenied) return;
 
                 
-
-                if (!AuthenticationService.isIdentityResolved()) {
-                    event.preventDefault();
-                    $state.go("login");
-                }
-
-                if (AuthenticationService.isIdentityResolved()) {
-                    if (!AuthorizationService.authorize()) {
+                if (AuthenticationService.authenticate()) {
+                    if (!AuthorizationService.authorize()) {                       
                         event.preventDefault();
                         $state.go("denied");
                     }
-
-                }
+                } else {
+                    event.preventDefault();
+                    $state.go("login");
+                }                
 
 
             });
+
         }
     ]);
     

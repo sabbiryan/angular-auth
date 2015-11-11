@@ -2,8 +2,8 @@
 
 angular.module("authApp")
     .service("UserDataService", [
-        "$q", "$http", "RoleDataService",
-        function($q, $http, RoleDataService) {
+        "$q", "$http", "RoleDataService", "LocalStorageService",
+        function ($q, $http, RoleDataService, LocalStorageService) {
 
             return {
                 get: function() {
@@ -29,7 +29,10 @@ angular.module("authApp")
                                     
                                     userList[u].IsLogin = true;
                                     userList[u].Token = "ABFH^456DFJUIFDKSKNAKJHEBHR";
-                                    return userList[u];
+
+                                    LocalStorageService.setUserInfo(userList[u]);
+
+                                    return true;
                                 }
                             }
                         }
